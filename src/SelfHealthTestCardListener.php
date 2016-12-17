@@ -42,8 +42,13 @@ class SelfHealthTestCardListener implements ListenerAggregateInterface
         $params = $e->getParams();
 
         // 创建测评卡
-        $this->selfHealthService = $this->services->get('ApigilityVendorIntegrate\Service\SelfHealth\SelfHealthService');
+        try {
+            $this->selfHealthService = $this->services->get('ApigilityVendorIntegrate\Service\SelfHealth\SelfHealthService');
+            $this->selfHealthService->createTestCard($params['user']);
+        } catch (\Exception $exception) {
+            // 忽略测评卡服务的错误
+            return false;
+        }
 
-        $this->selfHealthService->createTestCard($params['user']);
     }
 }
