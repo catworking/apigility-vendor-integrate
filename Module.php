@@ -35,19 +35,15 @@ class Module implements ApigilityProviderInterface
     public function onBootstrap(MvcEvent $e)
     {
         // This method is called once the MVC bootstrapping is complete
-        if ($e->getName() == MvcEvent::EVENT_BOOTSTRAP) {
-            $application = $e->getApplication();
-            $services    = $application->getServiceManager();
+        $application = $e->getApplication();
+        $services    = $application->getServiceManager();
 
-            $application->getEventManager()->attach(MvcEvent::EVENT_ROUTE, function () use ($services){
-                $events = $services->get('ApigilityUser\Service\UserService')->getEventManager();
+        $events = $services->get('ApigilityUser\Service\UserService')->getEventManager();
 
-                $config = $services->get('config');
-                if ($config['apigility-vendor-integrate']['self-health']['enable']) {
-                    $selfHealth_listener = new SelfHealthTestCardListener($services);
-                    $selfHealth_listener->attach($events);
-                }
-            });
+        $config = $services->get('config');
+        if ($config['apigility-vendor-integrate']['self-health']['enable']) {
+            $selfHealth_listener = new SelfHealthTestCardListener($services);
+            $selfHealth_listener->attach($events);
         }
     }
 }
