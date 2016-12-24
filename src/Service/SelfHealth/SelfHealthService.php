@@ -57,7 +57,7 @@ class SelfHealthService
         $this->tokenCache = new FilesystemCache([
             'cache_dir'=>$this->config['token_cache_path'],
             'dir_permission'=>0777,
-            'file_permission'=>0777,
+            'file_permission'=>0666,
         ]);
         $this->tokenCache->getOptions()->setTtl(36000);
     }
