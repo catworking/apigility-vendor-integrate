@@ -53,7 +53,11 @@ class SelfHealthService
 
         $this->config = $config;
 
-        if (!file_exists($this->config['token_cache_path'])) mkdir($this->config['token_cache_path'], 0777, true);
+        if (!file_exists($this->config['token_cache_path'])) {
+            $old_mask = umask(0);
+            mkdir($this->config['token_cache_path'], 0777, true);
+            umask($old_mask);
+        }
         $this->tokenCache = new FilesystemCache([
             'cache_dir'=>$this->config['token_cache_path'],
             'dir_permission'=>0777,
