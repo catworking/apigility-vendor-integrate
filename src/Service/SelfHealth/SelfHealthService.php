@@ -55,7 +55,9 @@ class SelfHealthService
 
         if (!file_exists($this->config['token_cache_path'])) mkdir($this->config['token_cache_path'], 0777, true);
         $this->tokenCache = new FilesystemCache([
-            'cache_dir'=>$this->config['token_cache_path']
+            'cache_dir'=>$this->config['token_cache_path'],
+            'dir_permission'=>0777,
+            'file_permission'=>0777,
         ]);
         $this->tokenCache->getOptions()->setTtl(36000);
     }
