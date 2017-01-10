@@ -119,7 +119,7 @@ class SelfHealthService
             $token_object = json_decode($response->body);
 
             if (empty($token_object)) throw new \Exception('第三方服务器响应出错', 500);
-            else if ($token_object->res != 'SUCCESS') throw new \Exception('第三方服务器认证失败', 500);
+            else if ($token_object->res != 'SUCCESS') throw new \Exception('第三方服务器认证失败:['.$token_object->error->code.']'.$token_object->error->message, 500);
             else {
                 return $token_object->data;
             }
