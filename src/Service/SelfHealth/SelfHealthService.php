@@ -36,6 +36,11 @@ class SelfHealthService
      */
     protected $identityService;
 
+    /**
+     * @var \ApigilityUser\Service\UserService
+     */
+    protected $userService;
+
     protected $config;
 
     protected $tokenCache;
@@ -160,6 +165,13 @@ class SelfHealthService
         }
 
         $doctrine_paginator = new DoctrineToolPaginator($qb->getQuery());
+
+        // 如果找不到测评卡,尝试从服务器生成
+        if ($doctrine_paginator->count() == 0) {
+            $this->userService = $this->serviceManager->get('ApigilityUser\Service\UserService');
+            $this->createTestCard($this->userService->getUser($params->user_id));
+        }
+
         return new DoctrinePaginatorAdapter($doctrine_paginator);
     }
 
