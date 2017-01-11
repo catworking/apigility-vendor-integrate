@@ -9,6 +9,7 @@ return [
     'service_manager' => array(
         'factories' => array(
             'ApigilityVendorIntegrate\Service\SelfHealth\SelfHealthService' => 'ApigilityVendorIntegrate\Service\SelfHealth\SelfHealthServiceFactory',
+            'ApigilityVendorIntegrate\Service\EaseMob\EaseMobService' => 'ApigilityVendorIntegrate\Service\EaseMob\EaseMobServiceFactory',
         ),
     )
 ];

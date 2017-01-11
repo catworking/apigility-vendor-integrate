@@ -38,12 +38,23 @@ class Module implements ApigilityProviderInterface
         $application = $e->getApplication();
         $services    = $application->getServiceManager();
 
-        $events = $services->get('ApigilityUser\Service\UserService')->getEventManager();
+        $identityServiceEvents = $services->get('ApigilityUser\Service\IdentityService')->getEventManager();
+        $userServiceEvents = $services->get('ApigilityUser\Service\UserService')->getEventManager();
 
+        // 创建健康测评卡
         $config = $services->get('config');
         if ($config['apigility-vendor-integrate']['self-health']['enable']) {
             $selfHealth_listener = new SelfHealthTestCardListener($services);
-            $selfHealth_listener->attach($events);
+            $selfHealth_listener->attach($userServiceEvents);
+        }
+
+        // 创建环信帐号
+        $config = $services->get('config');
+        if ($config['apigility-vendor-integrate']['ease-mob']['enable']) {
+            $easeMob_listener = new EaseMobListener($services);
+            $easeMob_listener->attachToIdentityService($identityServiceEvents);
+            $easeMob_listener->attachToIdentityServiceEventGettingList($identityServiceEvents);
+            $easeMob_listener->attachToUserService($userServiceEvents);
         }
     }
 }
