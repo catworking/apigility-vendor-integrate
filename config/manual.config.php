@@ -24,5 +24,9 @@ return [
             'login_url' => 'http://new.selfhealth.cn/user/#/login',
             'token_cache_path' => dirname(__FILE__).'/../../../data/ApigilityVendorIntegrate/SelfHealth'
         ],
+        'ju-he' => [
+            'enable'=>false,
+            'app_key'=>'',
+        ],
     ],
 ];

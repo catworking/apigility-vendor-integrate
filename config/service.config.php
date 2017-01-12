@@ -10,6 +10,7 @@ return [
         'factories' => array(
             'ApigilityVendorIntegrate\Service\SelfHealth\SelfHealthService' => 'ApigilityVendorIntegrate\Service\SelfHealth\SelfHealthServiceFactory',
             'ApigilityVendorIntegrate\Service\EaseMob\EaseMobService' => 'ApigilityVendorIntegrate\Service\EaseMob\EaseMobServiceFactory',
+            'ApigilityVendorIntegrate\Service\JuHe\IdCardService' => 'ApigilityVendorIntegrate\Service\JuHe\IdCardServiceFactory',
         ),
     )
 ];
