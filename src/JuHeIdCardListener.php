@@ -85,6 +85,7 @@ class JuHeIdCardListener implements ListenerAggregateInterface
                 $user_data['age'] = (int)((new \DateTime())->format('Y')) - $born_year;
 
                 // 分析省市区
+                /* 不再使用此方法分析省市区，已采用根据身份证号码进行识别的方案，详情请参阅ApigilityAddress和ApigilityUser模块
                 $pattern = '/^([^省市]+)[省市]{1,1}([^市县区]+)[市县区]{1,1}(([^市县区]+)[市县区]{1,1})?$/Uu';
                 $matches = null;
                 preg_match($pattern, $id_card_info->result->area, $matches);
@@ -123,6 +124,7 @@ class JuHeIdCardListener implements ListenerAggregateInterface
                         $user_data['census_register_address'] = $address->getId();
                     }
                 }
+                */
 
                 // 保存到用户资料
                 $this->userService = $this->services->get('ApigilityUser\Service\UserService');
