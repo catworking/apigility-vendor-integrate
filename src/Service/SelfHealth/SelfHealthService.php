@@ -109,6 +109,11 @@ class SelfHealthService
      */
     public function generateTestCardId($user_id, $phone)
     {
+        // 先查测评卡是否已存在服务器
+        $card_id = $this->checkTestCard($user_id);
+        if (!empty($card_id)) return $card_id;
+
+        // 不存在，尝试新建一个
         $response = Requests::post($this->config['server_url'].'/card_v2?format=json',array(),[
             'uniqueId' => $user_id,
             'mobile' => $phone,
@@ -178,5 +183,28 @@ class SelfHealthService
     public function makeLoginUrl($card_id)
     {
         return $this->config['login_url'].'?token='.$this->getAccessToken().'&cardId='.$card_id;
+    }
+
+    private function checkTestCard($user_id)
+    {
+        $response = Requests::request($this->config['server_url'].'/check_card', array(), [
+            'uniqueId' => $user_id,
+            'format' => 'json',
+            'token' => $this->getAccessToken()
+        ], Requests::GET, [
+            'data_format'=> 'query'
+        ]);
+
+        if ($response->success) {
+            $token_object = json_decode($response->body);
+
+            if (empty($token_object)) throw new \Exception('第三方服务器响应出错', 500);
+            else if ($token_object->res != 'SUCCESS') {
+                if ((int)$token_object->error->code = 1) return null;
+                else throw new \Exception('第三方服务器返回错误:['.$token_object->error->code.']'.$token_object->error->message, 500);
+            } else {
+                return $token_object->data->cardId;
+            }
+        } else throw new \Exception('第三方服务器响应出错', 500);
     }
 }
